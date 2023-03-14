@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 public class OcrUtil {
-    private static final String exePath = "E:\\IDEA\\sourcecode\\STH\\src\\main\\resources\\ocr\\PaddleOCR_json.exe";
+    private static final String exePath = "./libs/ocr/PaddleOCR_json.exe";
 
     public static OcrEntry startOcrFindWord(String imgPath, String aimWord, List<String> FuzzyWords) {
         // 可选的配置项

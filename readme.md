@@ -46,6 +46,8 @@
 > 参考链接：
 >
 > adb使用-详细教程：https://blog.csdn.net/u010610691/article/details/77663770
+> STF 框架之 minitouch 工具：https://testerhome.com/topics/4400
+> STF 框架之 minicap 工具：https://testerhome.com/topics/3115
 
 ## 大致流程（以执行一次定时攻城任务为例）
 

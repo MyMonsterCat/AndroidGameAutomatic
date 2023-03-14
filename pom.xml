@@ -15,12 +15,12 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.bytedeco/tesseract-platform -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.bytedeco</groupId>-->
-        <!--            <artifactId>tesseract-platform</artifactId>-->
-        <!--            <version>5.2.0-1.5.8</version>-->
-        <!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.github.monster</groupId>
+            <artifactId>device-touch</artifactId>
+            <version>0.0.1</version>
+        </dependency>
 
         <!-- 常规 -->
         <dependency>
@@ -72,6 +72,13 @@
 
 
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>google-maven</id>
+            <url>https://maven.google.com/</url>
+        </repository>
+    </repositories>
 
 
 </project>
