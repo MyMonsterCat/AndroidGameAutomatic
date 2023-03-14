@@ -1,7 +1,7 @@
 package com.monster.api;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.monster.service.SthServiceImpl;
+import com.monster.service.ISthService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -16,9 +16,8 @@ import java.text.MessageFormat;
 @Component
 public class MainWin extends JFrame {
 
-
     @Resource
-    private SthServiceImpl sthService;
+    private ISthService sthService;
 
 
     static {
@@ -91,7 +90,7 @@ public class MainWin extends JFrame {
 
 //            ApplicationContext context = ApplicationContextProvider.getContext();
 //            Tt tt = context.getBean(Tt.class);
-            sthService.attackCity(textX, textY);
+            sthService.attackCity(Integer.parseInt(textX), Integer.parseInt(textY));
         });
 
 

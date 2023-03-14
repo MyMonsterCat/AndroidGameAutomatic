@@ -8,7 +8,6 @@ import com.monster.ocr.OcrEntry;
 import com.monster.ocr.OcrUtil;
 import com.monster.util.ImageUtil;
 import lombok.SneakyThrows;
-import org.jpedal.parser.shape.D;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -18,17 +17,55 @@ import java.util.List;
 public class SthServiceImpl implements ISthService {
     @Resource
     private DeviceCli deviceCli;
+    @Resource
+    private AdbCli adbCli;
 
     @SneakyThrows
     @Override
-    public void attackCity(String x, String y) {
-        deviceCli.touchDown(Integer.parseInt(x), Integer.parseInt(y));
-
-        deviceCli.touchUp(Integer.parseInt(x), Integer.parseInt(y));
-
+    public void attackCity(int x, int y) {
+//        deviceCli.touchDown(x, y);
+//        deviceCli.touchUp(x, y);
+        jumpAddress(x, y);
 //        adbCli.swipe(100,150,1300,700,1000);
 
         System.out.println("被调用啦" + x + "," + y);
+    }
+
+    @SneakyThrows
+    public void jumpAddress(int x, int y) {
+        // 点击搜索
+        deviceCli.touchDown(1418, 98);
+        deviceCli.touchUp(1418, 98);
+        Thread.sleep(500);
+        // 点击左侧输入坐标
+        deviceCli.touchDown(1187, 854);
+        deviceCli.touchUp(1187, 854);
+        Thread.sleep(500);
+        // 按四下删除键，每次按下需要停止一会
+        for (int i = 0; i < 4; i++) {
+            adbCli.sendKeyEvent(4);
+            Thread.sleep(500);
+        }
+        //输入x坐标
+        adbCli.sendText(String.valueOf(x));
+        Thread.sleep(500);
+        // 点击两次，第一次取消输入框，第二次点击右侧输入坐标
+        deviceCli.touchDown(1362, 857);
+        deviceCli.touchUp(1362, 857);
+
+        deviceCli.touchDown(1362, 857);
+        deviceCli.touchUp(1362, 857);
+        // 按四下删除键，每次按下需要停止一会
+        for (int i = 0; i < 4; i++) {
+            adbCli.sendKeyEvent(4);
+            Thread.sleep(500);
+        }
+        //输入y坐标
+        adbCli.sendText(String.valueOf(y));
+        Thread.sleep(500);
+        // 点击两次，第一次取消输入框，第二次点击跳转按钮
+        deviceCli.touchDown(1481, 852);
+        deviceCli.touchUp(1481, 852);
     }
 
     /**

@@ -4,5 +4,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface ISthService {
-    void attackCity(String x, String y);
+    void attackCity(int x, int y);
 }

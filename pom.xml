@@ -42,14 +42,6 @@
             <version>3.0</version>
         </dependency>
 
-        <!-- Adb使用 -->
-        <!-- https://mvnrepository.com/artifact/com.android.tools.ddms/ddmlib -->
-        <dependency>
-            <groupId>com.android.tools.ddms</groupId>
-            <artifactId>ddmlib</artifactId>
-            <version>31.1.0-alpha06</version>
-        </dependency>
-
         <!-- 图片压缩工具 -->
         <dependency>
             <groupId>org.jpedal</groupId>
@@ -72,13 +64,6 @@
 
 
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>google-maven</id>
-            <url>https://maven.google.com/</url>
-        </repository>
-    </repositories>
 
 
 </project>

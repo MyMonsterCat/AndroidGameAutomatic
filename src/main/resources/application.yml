@@ -2,7 +2,8 @@
 logging:
   level:
     # adb日志
-    com.monster.adb: debug
+    com.monster: debug
+    com.github.monster: debug
   charset:
     # 输出控制台编码
     console: UTF-8
