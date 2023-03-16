@@ -1,7 +1,8 @@
 package com.monster.api;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.monster.service.ISthService;
+import com.monster.schedule.AttackTask;
+import com.monster.schedule.DynamicTaskPool;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -12,12 +13,13 @@ import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.MessageFormat;
+import java.util.Date;
 
 @Component
 public class MainWin extends JFrame {
 
     @Resource
-    private ISthService sthService;
+    private DynamicTaskPool dynamicTaskPool;
 
 
     static {
@@ -88,11 +90,11 @@ public class MainWin extends JFrame {
             String textY = textFieldY.getText();
             System.out.println(MessageFormat.format("输入的坐标是：{0},{1}", textX, textY));
 
-//            ApplicationContext context = ApplicationContextProvider.getContext();
-//            Tt tt = context.getBean(Tt.class);
-            sthService.attackCity(Integer.parseInt(textX), Integer.parseInt(textY));
-        });
+            AttackTask attackTask = new AttackTask(Integer.parseInt(textX), Integer.parseInt(textY));
+            attackTask.setStartTime(new Date());
 
+            dynamicTaskPool.add(attackTask);
+        });
 
         jPanel.add(textFieldX);
         jPanel.add(textFieldY);
