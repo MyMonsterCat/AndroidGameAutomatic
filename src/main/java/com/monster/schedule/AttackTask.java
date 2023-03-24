@@ -5,6 +5,8 @@ import com.monster.service.SthServiceImpl;
 import com.monster.util.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
+
 /**
  * @author Monster
  * @date 2023/3/16 15:55
@@ -12,9 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AttackTask extends CustomizeTask {
 
-    public AttackTask(int x, int y) {
+    public AttackTask(int x, int y, Date date) {
         this.x = x;
         this.y = y;
+        this.startTime = date;
+        this.name = "attack";
     }
 
     public void setName(String name) {

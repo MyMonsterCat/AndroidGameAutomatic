@@ -8,12 +8,14 @@ import com.monster.ocr.OcrEntry;
 import com.monster.ocr.OcrUtil;
 import com.monster.util.ImageUtil;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Component
+@Slf4j
 public class SthServiceImpl implements ISthService {
     @Resource
     private DeviceCli deviceCli;
@@ -23,8 +25,8 @@ public class SthServiceImpl implements ISthService {
     @SneakyThrows
     @Override
     public void attackCity(int x, int y) {
-//        deviceCli.touchDown(x, y);
-//        deviceCli.touchUp(x, y);
+        // 识别当前
+
         jumpAddress(x, y);
 //        adbCli.swipe(100,150,1300,700,1000);
 

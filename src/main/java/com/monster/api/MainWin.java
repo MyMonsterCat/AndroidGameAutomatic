@@ -1,5 +1,6 @@
 package com.monster.api;
 
+import cn.hutool.core.date.DateUtil;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.monster.schedule.AttackTask;
 import com.monster.schedule.DynamicTaskPool;
@@ -90,8 +91,9 @@ public class MainWin extends JFrame {
             String textY = textFieldY.getText();
             System.out.println(MessageFormat.format("输入的坐标是：{0},{1}", textX, textY));
 
-            AttackTask attackTask = new AttackTask(Integer.parseInt(textX), Integer.parseInt(textY));
-            attackTask.setStartTime(new Date());
+            Date startTime = DateUtil.offsetMillisecond(new Date(), 10).toCalendar().getTime();
+            AttackTask attackTask = new AttackTask(Integer.parseInt(textX), Integer.parseInt(textY), startTime);
+
 
             dynamicTaskPool.add(attackTask);
         });
@@ -108,8 +110,6 @@ public class MainWin extends JFrame {
                 super.windowClosing(e);
                 System.out.println("Swing关闭");
             }
-
-            ;
         });
 
 
