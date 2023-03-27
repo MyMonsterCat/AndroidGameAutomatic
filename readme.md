@@ -1,61 +1,83 @@
-## 功能安排
+## 脚手架
 
-- [ ] 定时打城
-- [ ] 队伍压秒
-- [ ] 自动刷级
-- [ ] 战报统计
-- [ ] 自动铺路
-- [ ] 辅助开荒
+可以定时控制模拟点击安卓设备
 
 ## 整体框架
 
-### GUI界面：采用Swing第三方flatlaf
+- GUI界面：[flatlaf](https://github.com/JFormDesigner/FlatLaf)
 
-> 参考链接：https://github.com/JFormDesigner/FlatLaf
+- 文字+图像识别：[PaddleOCR-json](https://github.com/hiroi-sora/PaddleOCR-json)
 
-### 文字识别
+- 后端框架：SringBoot2.7.5
 
-方式一：[paddleocr](https://github.com/jiangnanboy/java-springboot-paddleocr)
+- 安卓设备控制:[DeviceTouch](https://github.com/MyMonsterCat/DeviceTouch)
 
-方式二：[PaddleOCR-json](https://github.com/hiroi-sora/PaddleOCR-json)
+## 快速使用
 
-> 参考链接：
->
-> - C++编译：https://www.cnblogs.com/little-horse/p/16926646.html
-> - 本地化部署：https://blog.csdn.net/f2315895270/article/details/128150679
+- 编写任务:需要继承CustomizeTask类，其中date是该任务执行的时间
 
-### 图像识别：OpenCV
+```java
 
-> 参考链接：
->
-> - java+openCV：https://cloud.tencent.com/developer/article/2161336
-> - java 使用 OpenCV: https://blog.csdn.net/acnwcl/article/details/123754825
+@Slf4j
+public class AttackTask extends CustomizeTask {
 
-### 后端框架：SringBoot2.7.5
+    public AttackTask(int x, int y, Date date) {
+        this.x = x;
+        this.y = y;
+        this.startTime = date;
+        this.name = "AttackCity-Task";
+    }
 
-> 参考链接：
->
-> SringBoot + Swing整合：https://www.cnblogs.com/yjc-vue-react-java/p/15684900.html
->
-> easyTodo： https://gitee.com/wmazh/easytodo
->
-> 使用springboot搭建swing桌面程序: https://blog.csdn.net/weixin_39169535/article/details/125844737
+    private int x;
+    private int y;
 
-### 调用模拟器：adb
 
-> 参考链接：
->
-> adb使用-详细教程：https://blog.csdn.net/u010610691/article/details/77663770
-> STF 框架之 minitouch 工具：https://testerhome.com/topics/4400
-> STF 框架之 minicap 工具：https://testerhome.com/topics/3115
+    @Override
+    public void taskRun() {
+        SthServiceImpl sthService = SpringContextUtil.getBean(ISthService.class);
+        sthService.attackCity(x, y);
+        log.info("任务{}执行了", this.getName());
+    }
+}
+```
 
-## 大致流程（以执行一次定时攻城任务为例）
+```java
 
-1. 选择队伍，输入坐标和进攻时间
-2. 前端界面将数据传给后台，后台此时
-   1. 调用模拟器进行截图
-   2. 将图片进行文字识别，提取出征时间
-   3. 后台获取到出征时间，自动生成出征脚本
-   4. 设立定时任务来执行脚本
-3. 在设定的时间执行脚本
-4. 在adb中执行脚本，完成任务
+@Component
+@Slf4j
+public class SthServiceImpl implements ISthService {
+
+    // DeviceCli的使用请参考DeviceTouch
+    @Resource
+    private DeviceCli deviceCli;
+
+    public void attackCity(int x, int y) {
+        deviceCli.touchDown(x, y);
+        deviceCli.touchUp(x, y);
+        log.info("开始执行点击事件" + x + "," + y);
+
+    }
+}
+```
+
+- 为该任务绑定事件（也可以是接口等）
+
+```java
+// 设置按钮
+button = new JButton("开始");
+button.addActionListener(e -> {
+    String textX = textFieldX.getText();
+    String textY = textFieldY.getText();
+    System.out.println(MessageFormat.format("输入的坐标是：{0},{1}", textX, textY));
+
+  	// 设置执行时间
+    Date startTime = DateUtil.offsetMillisecond(new Date(), 10).toCalendar().getTime();
+    AttackTask attackTask = new AttackTask(Integer.parseInt(textX), Integer.parseInt(textY), startTime);
+
+    dynamicTaskPool.add(attackTask);
+});
+
+jPanel.add(textFieldX);
+jPanel.add(textFieldY);
+jPanel.add(button);
+```
