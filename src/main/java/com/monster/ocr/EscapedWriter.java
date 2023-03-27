@@ -6,14 +6,14 @@ import java.io.Writer;
 
 public class EscapedWriter extends FilterWriter {
     /**
-     * Convenience field containing the system's line separator.
+     * 系统分隔符
      */
     public final String lineSeparator = System.getProperty("line.separator");
     private final int cr = lineSeparator.charAt(0);
     private final int lf = (lineSeparator.length() == 2) ? lineSeparator.charAt(1) : -1;
 
     /**
-     * Constructs an EscapedWriter around the given Writer.
+     * 围绕给定的Writer构造一个EscapedWriter。
      */
     public EscapedWriter(Writer fos) {
         super(fos);
@@ -22,7 +22,7 @@ public class EscapedWriter extends FilterWriter {
     private final StringBuffer mini = new StringBuffer();
 
     /**
-     * Print a single character (unsupported).
+     * 打印单个字符
      */
     public void print(int ch) throws IOException {
         write(ch);
@@ -30,7 +30,7 @@ public class EscapedWriter extends FilterWriter {
     }
 
     /**
-     * Write a segment of the given String.
+     * 输出给定字符
      */
     public void write(String s, int off, int len) throws IOException {
         for (int i = off; i < off + len; i++) {
@@ -39,7 +39,7 @@ public class EscapedWriter extends FilterWriter {
     }
 
     /**
-     * Write a single character.
+     * 单个字符
      */
     public void write(int ch) throws IOException {
         if (ch >= 32 && ch <= 126 || ch == cr || ch == lf || ch == ' ') {

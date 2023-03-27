@@ -18,10 +18,6 @@ public class AttackTask extends CustomizeTask {
         this.x = x;
         this.y = y;
         this.startTime = date;
-        this.name = "attack";
-    }
-
-    public void setName(String name) {
         this.name = "AttackCity-Task";
     }
 
@@ -33,6 +29,6 @@ public class AttackTask extends CustomizeTask {
     public void taskRun() {
         SthServiceImpl sthService = SpringContextUtil.getBean(ISthService.class);
         sthService.attackCity(x, y);
-        log.info("任务执行了" + this.getName());
+        log.info("任务{}执行了", this.getName());
     }
 }

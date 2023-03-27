@@ -1,5 +1,8 @@
-package com.monster.ocr;
+package com.monster.constant;
 
+/**
+ * 分辨率常量
+ */
 public class ResolvingPowerConstant {
 
     /**

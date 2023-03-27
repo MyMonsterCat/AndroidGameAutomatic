@@ -1,7 +1,7 @@
 //package com.monster;
 //
 //import com.android.ddmlib.IDevice;
-//import com.monster.ocr.CoordinateEnum;
+//import com.monster.constant.CoordinateEnum;
 //import com.monster.ocr.OcrEntry;
 //import com.monster.ocr.OcrUtil;
 //import lombok.SneakyThrows;

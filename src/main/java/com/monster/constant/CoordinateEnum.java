@@ -1,4 +1,4 @@
-package com.monster.ocr;
+package com.monster.constant;
 
 public enum CoordinateEnum {
     /**

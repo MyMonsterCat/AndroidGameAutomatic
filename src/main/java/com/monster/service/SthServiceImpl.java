@@ -3,7 +3,7 @@ package com.monster.service;
 
 import com.github.monster.device.cli.AdbCli;
 import com.github.monster.device.cli.DeviceCli;
-import com.monster.ocr.CoordinateEnum;
+import com.monster.constant.CoordinateEnum;
 import com.monster.ocr.OcrEntry;
 import com.monster.ocr.OcrUtil;
 import com.monster.util.ImageUtil;
@@ -25,49 +25,12 @@ public class SthServiceImpl implements ISthService {
     @SneakyThrows
     @Override
     public void attackCity(int x, int y) {
-        // 识别当前
+        deviceCli.touchDown(x, y);
+        deviceCli.touchUp(x, y);
+        log.info("开始执行点击事件" + x + "," + y);
+        // 指定某个区域，识别'建业'这个单词，如果识别到就点击这个词所在的坐标
+        shotCropperOcrClick(System.currentTimeMillis() + ".png", "建业", null, 770, 370, 300, 200, CoordinateEnum.BottomRight);
 
-        jumpAddress(x, y);
-//        adbCli.swipe(100,150,1300,700,1000);
-
-        System.out.println("被调用啦" + x + "," + y);
-    }
-
-    @SneakyThrows
-    public void jumpAddress(int x, int y) {
-        // 点击搜索
-        deviceCli.touchDown(1418, 98);
-        deviceCli.touchUp(1418, 98);
-        Thread.sleep(500);
-        // 点击左侧输入坐标
-        deviceCli.touchDown(1187, 854);
-        deviceCli.touchUp(1187, 854);
-        Thread.sleep(500);
-        // 按四下删除键，每次按下需要停止一会
-        for (int i = 0; i < 4; i++) {
-            adbCli.sendKeyEvent(4);
-            Thread.sleep(500);
-        }
-        //输入x坐标
-        adbCli.sendText(String.valueOf(x));
-        Thread.sleep(500);
-        // 点击两次，第一次取消输入框，第二次点击右侧输入坐标
-        deviceCli.touchDown(1362, 857);
-        deviceCli.touchUp(1362, 857);
-
-        deviceCli.touchDown(1362, 857);
-        deviceCli.touchUp(1362, 857);
-        // 按四下删除键，每次按下需要停止一会
-        for (int i = 0; i < 4; i++) {
-            adbCli.sendKeyEvent(4);
-            Thread.sleep(500);
-        }
-        //输入y坐标
-        adbCli.sendText(String.valueOf(y));
-        Thread.sleep(500);
-        // 点击两次，第一次取消输入框，第二次点击跳转按钮
-        deviceCli.touchDown(1481, 852);
-        deviceCli.touchUp(1481, 852);
     }
 
     /**
@@ -84,7 +47,7 @@ public class SthServiceImpl implements ISthService {
      * @return
      */
     @SneakyThrows
-    private boolean shotCropperOcrClick(String imgPath, String aimWord, List<String> FuzzyWords, int x, int y, int width, int height, CoordinateEnum coordinateEnum) {
+    private void shotCropperOcrClick(String imgPath, String aimWord, List<String> FuzzyWords, int x, int y, int width, int height, CoordinateEnum coordinateEnum) {
         // 截屏
         deviceCli.screenShot(imgPath);
         // 裁剪
@@ -92,8 +55,8 @@ public class SthServiceImpl implements ISthService {
         // ocr识别
         OcrEntry findWord = OcrUtil.startOcrFindWord(cityName, aimWord, FuzzyWords);
         if (findWord == null) {
-            System.out.println("未能成功识别");
-            return false;
+            log.error("未能成功识别关键词{},模糊词", aimWord, FuzzyWords);
+            return;
         }
         int[][] box = findWord.getBox();
         int aimX = x;
@@ -115,7 +78,6 @@ public class SthServiceImpl implements ISthService {
 
         deviceCli.touchDown(x, y);
         deviceCli.touchUp(x, y);
-        return true;
     }
 
     /**
