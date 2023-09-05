@@ -1,5 +1,7 @@
 package com.github.monster.core.ocr;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 public class OcrUtil {
     private static final String exePath = "./libs/ocr/PaddleOCR_json.exe";
 
@@ -22,7 +25,7 @@ public class OcrUtil {
             if (resp.code == OcrCode.OK) {
                 for (OcrEntry entry : resp.data) {
 
-                    System.out.println(entry.text);
+                    log.info("识别到: {}", entry.text);
 
                     if (entry.text.equals(aimWord)) {
                         return entry;
@@ -36,7 +39,27 @@ public class OcrUtil {
                     }
                 }
             } else {
-                System.out.println("error: code=" + resp.code + " msg=" + resp.msg);
+                log.info("error: code=" + resp.code + " msg=" + resp.msg);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public static OcrResponse startOcrAllWord(String imgPath) {
+        // 可选的配置项
+        Map<String, Object> arguments = new HashMap<>();
+
+        // 初始化 OCR
+        try (Ocr ocr = new Ocr(new File(exePath), arguments)) {
+            OcrResponse resp = ocr.runOcr(new File(imgPath));
+            // 读取结果
+            if (resp.code == OcrCode.OK) {
+                return resp;
+            } else {
+                log.info("error: code=" + resp.code + " msg=" + resp.msg);
             }
         } catch (IOException e) {
             e.printStackTrace();

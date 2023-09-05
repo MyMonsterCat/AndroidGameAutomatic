@@ -30,7 +30,7 @@ public class CollectController {
 
         Task task = new Task("test", startTime, 0, 0, () -> {
             AttackCityService sthService = SpringContextUtil.getBean(AttackCityService.class);
-            sthService.aa(1, 2);
+            sthService.attackCityStatistics();
         });
 
         dynamicTaskPool.addOnce(task);
