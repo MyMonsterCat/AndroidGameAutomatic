@@ -1,14 +1,14 @@
-package com.monster;
+package com.github.monster;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.monster.*")
+@ComponentScan("com.github.monster.*")
 public class STHApplication {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(STHApplication.class).headless(false).run(args);
+        SpringApplication.run(STHApplication.class, args);
     }
 }

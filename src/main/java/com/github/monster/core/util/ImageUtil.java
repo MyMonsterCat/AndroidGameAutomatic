@@ -1,4 +1,4 @@
-package com.monster.util;
+package com.github.monster.core.util;
 
 import com.idrsolutions.image.png.PngCompressor;
 import lombok.SneakyThrows;

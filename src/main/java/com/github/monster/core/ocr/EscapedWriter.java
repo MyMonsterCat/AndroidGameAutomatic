@@ -1,4 +1,4 @@
-package com.monster.ocr;
+package com.github.monster.core.ocr;
 
 import java.io.FilterWriter;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.monster.schedule;
+package com.github.monster.core.pool;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 @Configuration
-public class ScheduleConfig {
+public class TaskConfig {
 
     /**
      * 用来存入线程执行情况, 方便于停止定时任务时使用

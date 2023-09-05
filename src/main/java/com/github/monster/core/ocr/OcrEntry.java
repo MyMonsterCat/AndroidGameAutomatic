@@ -1,4 +1,4 @@
-package com.monster.ocr;
+package com.github.monster.core.ocr;
 
 import lombok.Getter;
 import lombok.Setter;

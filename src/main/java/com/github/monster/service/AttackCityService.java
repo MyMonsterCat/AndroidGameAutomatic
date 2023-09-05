@@ -1,12 +1,12 @@
-package com.monster.service;
+package com.github.monster.service;
 
 
+import com.github.monster.core.enums.CoordinateEnum;
+import com.github.monster.core.util.ImageUtil;
 import com.github.monster.device.cli.AdbCli;
 import com.github.monster.device.cli.DeviceCli;
-import com.monster.constant.CoordinateEnum;
-import com.monster.ocr.OcrEntry;
-import com.monster.ocr.OcrUtil;
-import com.monster.util.ImageUtil;
+import com.github.monster.core.ocr.OcrEntry;
+import com.github.monster.core.ocr.OcrUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,14 +16,13 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class SthServiceImpl implements ISthService {
+public class AttackCityService {
     @Resource
     private DeviceCli deviceCli;
     @Resource
     private AdbCli adbCli;
 
     @SneakyThrows
-    @Override
     public void attackCity(int x, int y) {
         deviceCli.touchDown(x, y);
         deviceCli.touchUp(x, y);
@@ -31,6 +30,10 @@ public class SthServiceImpl implements ISthService {
         // 指定某个区域，识别'建业'这个单词，如果识别到就点击这个词所在的坐标
         shotCropperOcrClick(System.currentTimeMillis() + ".png", "建业", null, 770, 370, 300, 200, CoordinateEnum.BottomRight);
 
+    }
+
+    public void aa(int x, int y) {
+        System.out.println("开始执行点击事件" + x + "," + y);
     }
 
     /**
@@ -55,7 +58,7 @@ public class SthServiceImpl implements ISthService {
         // ocr识别
         OcrEntry findWord = OcrUtil.startOcrFindWord(cityName, aimWord, FuzzyWords);
         if (findWord == null) {
-            log.error("未能成功识别关键词{},模糊词", aimWord, FuzzyWords);
+            log.error("未能成功识别关键词:{} , 模糊词:{}", aimWord, FuzzyWords);
             return;
         }
         int[][] box = findWord.getBox();

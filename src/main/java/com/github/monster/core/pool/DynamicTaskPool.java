@@ -1,5 +1,6 @@
-package com.monster.schedule;
+package com.github.monster.core.pool;
 
+import com.github.monster.core.task.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -19,9 +20,9 @@ public class DynamicTaskPool {
      *
      * @param task 任务
      */
-    public void add(CustomizeTask task) {
+    public void addOnce(Task task) {
         ScheduledFuture scheduledFuture = threadPoolTaskScheduler.schedule(task, task.getStartTime());
-        ScheduleConfig.cache.put(task.getName(), scheduledFuture);
+        TaskConfig.cache.put(task.getName(), scheduledFuture);
         log.info("任务{}放入队列，将在{}执行", task.getName(), task.getStartTime());
     }
 
@@ -30,9 +31,9 @@ public class DynamicTaskPool {
      *
      * @param task 任务
      */
-    public void addAtFixedRate(CustomizeTask task) {
+    public void addAtFixedRate(Task task) {
         ScheduledFuture scheduledFuture = threadPoolTaskScheduler.scheduleAtFixedRate(task, task.getDuration());
-        ScheduleConfig.cache.put(task.getName(), scheduledFuture);
+        TaskConfig.cache.put(task.getName(), scheduledFuture);
     }
 
     /**
@@ -40,9 +41,9 @@ public class DynamicTaskPool {
      *
      * @param task
      */
-    public void addAtFixedRateDelay(CustomizeTask task) {
+    public void addAtFixedRateDelay(Task task) {
         ScheduledFuture scheduledFuture = threadPoolTaskScheduler.scheduleAtFixedRate(task, task.getStartTime(), task.getDuration());
-        ScheduleConfig.cache.put(task.getName(), scheduledFuture);
+        TaskConfig.cache.put(task.getName(), scheduledFuture);
     }
 
     /**
@@ -50,28 +51,28 @@ public class DynamicTaskPool {
      *
      * @param task 任务
      */
-    public void addWithFixedDelay(CustomizeTask task) {
+    public void addWithFixedDelay(Task task) {
         ScheduledFuture scheduledFuture = threadPoolTaskScheduler.scheduleAtFixedRate(task, task.getDelay());
-        ScheduleConfig.cache.put(task.getName(), scheduledFuture);
+        TaskConfig.cache.put(task.getName(), scheduledFuture);
     }
 
 
     public void stop(String taskName) {
-        if (ScheduleConfig.cache.isEmpty()) return;
-        if (ScheduleConfig.cache.get(taskName) == null) return;
+        if (TaskConfig.cache.isEmpty()) return;
+        if (TaskConfig.cache.get(taskName) == null) return;
 
-        ScheduledFuture scheduledFuture = ScheduleConfig.cache.get(taskName);
+        ScheduledFuture scheduledFuture = TaskConfig.cache.get(taskName);
 
         if (scheduledFuture != null) {
             // 停止当前的线程
             scheduledFuture.cancel(true);
-            ScheduleConfig.cache.remove(taskName);
+            TaskConfig.cache.remove(taskName);
         }
     }
 
     public void stopAll() {
-        if (ScheduleConfig.cache.isEmpty()) return;
-        ScheduleConfig.cache.values().forEach(scheduledFuture -> scheduledFuture.cancel(true));
+        if (TaskConfig.cache.isEmpty()) return;
+        TaskConfig.cache.values().forEach(scheduledFuture -> scheduledFuture.cancel(true));
     }
 
 
