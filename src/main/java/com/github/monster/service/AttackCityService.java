@@ -28,14 +28,17 @@ public class AttackCityService {
         // 战报
         deviceCli.touchDown(58, 641);
         deviceCli.touchUp(58,641);
+        Thread.sleep(1000);
         // 同盟日志
-        deviceCli.touchDown(1444, 81);
+        deviceCli.touchDown(1443, 811);
         deviceCli.touchUp(1444,811);
+        Thread.sleep(1000);
         // 攻城
         deviceCli.touchDown(295, 130);
         deviceCli.touchUp(295,130);
+        Thread.sleep(1000);
         // 开始OCR识别
-        OcrClick(System.currentTimeMillis() + ".png", 10, 160, 1000, 700);
+        OcrClick(System.getProperty("user.dir")+"/img"+System.currentTimeMillis() + ".png", 10, 160, 1000, 700);
 
         // 指定某个区域，如果识别到就点击这个词所在的坐标
 //        shotCropperOcrClick(System.currentTimeMillis() + ".png", "建业", null, 770, 370, 300, 200, CoordinateEnum.BottomRight);
@@ -98,7 +101,11 @@ public class AttackCityService {
         String cityName = ImageUtil.imageCropper(imgPath, x, y, width, height);
         // ocr识别
         OcrResponse ocrResponse = OcrUtil.startOcrAllWord(cityName);
-        System.out.println(ocrResponse);
+        OcrEntry[] data = ocrResponse.getData();
+        for (OcrEntry entry : data) {
+            log.debug("{}",entry.getText());
+        }
+
     }
 
     /**

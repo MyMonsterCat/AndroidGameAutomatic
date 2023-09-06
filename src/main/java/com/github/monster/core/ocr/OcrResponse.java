@@ -1,7 +1,10 @@
 package com.github.monster.core.ocr;
 
+import lombok.Data;
+
 import java.util.Arrays;
 
+@Data
 public class OcrResponse {
     int code;
     OcrEntry[] data;
