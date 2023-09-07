@@ -1,6 +1,7 @@
 package com.github.monster.service;
 
 
+import com.github.monster.core.constant.ImgConstant;
 import com.github.monster.core.enums.CoordinateEnum;
 import com.github.monster.core.ocr.OcrResponse;
 import com.github.monster.core.util.ImageUtil;
@@ -27,18 +28,20 @@ public class AttackCityService {
     public void attackCityStatistics() {
         // 战报
         deviceCli.touchDown(58, 641);
-        deviceCli.touchUp(58,641);
+        deviceCli.touchUp(58, 641);
         Thread.sleep(1000);
-        // 同盟日志
-        deviceCli.touchDown(1443, 811);
-        deviceCli.touchUp(1444,811);
-        Thread.sleep(1000);
-        // 攻城
-        deviceCli.touchDown(295, 130);
-        deviceCli.touchUp(295,130);
-        Thread.sleep(1000);
+//        // 同盟日志
+//        deviceCli.touchDown(1443, 811);
+//        deviceCli.touchUp(1444, 811);
+//        Thread.sleep(1000);
+//        // 攻城
+//        deviceCli.touchDown(295, 130);
+//        deviceCli.touchUp(295, 130);
+//        Thread.sleep(1000);
         // 开始OCR识别
-        OcrClick(System.getProperty("user.dir")+"/img"+System.currentTimeMillis() + ".png", 10, 160, 1000, 700);
+        String imgPath = ImgConstant.IMG_PACKAGE + System.currentTimeMillis() + ".png";
+        log.debug("图片路径为{}", imgPath);
+        OcrClick(imgPath, 10, 160, 1000, 700);
 
         // 指定某个区域，如果识别到就点击这个词所在的坐标
 //        shotCropperOcrClick(System.currentTimeMillis() + ".png", "建业", null, 770, 370, 300, 200, CoordinateEnum.BottomRight);
@@ -94,7 +97,7 @@ public class AttackCityService {
 
 
     @SneakyThrows
-    private void OcrClick(String imgPath,int x, int y, int width, int height) {
+    private void OcrClick(String imgPath, int x, int y, int width, int height) {
         // 截屏
         deviceCli.screenShot(imgPath);
         // 裁剪
@@ -103,7 +106,7 @@ public class AttackCityService {
         OcrResponse ocrResponse = OcrUtil.startOcrAllWord(cityName);
         OcrEntry[] data = ocrResponse.getData();
         for (OcrEntry entry : data) {
-            log.debug("{}",entry.getText());
+            log.debug("{}", entry.getText());
         }
 
     }
