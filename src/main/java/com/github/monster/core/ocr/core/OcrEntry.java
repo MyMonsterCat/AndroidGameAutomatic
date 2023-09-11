@@ -8,9 +8,9 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class OcrEntry {
-    String text;
-    int[][] box;
-    double score;
+    private String text;
+    private int[][] box;
+    private double score;
 
     @Override
     public String toString() {

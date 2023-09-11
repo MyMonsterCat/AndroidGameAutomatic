@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Slf4j
 public class OcrUtil {
-    private static final String exePath = "./libs/ocr/PaddleOCR_json.exe";
+    private static final String exePath = "./libs/ocr/PaddleOCR-json.exe";
 
     public static OcrEntry startOcrFindWord(String imgPath, String aimWord, List<String> FuzzyWords) {
         // 可选的配置项
