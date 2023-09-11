@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.github.monster</groupId>
             <artifactId>device-touch</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
 
         <!-- 常规 -->
