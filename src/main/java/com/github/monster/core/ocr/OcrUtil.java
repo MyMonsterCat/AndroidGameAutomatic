@@ -1,5 +1,9 @@
 package com.github.monster.core.ocr;
 
+import com.github.monster.core.ocr.core.Ocr;
+import com.github.monster.core.ocr.core.OcrCode;
+import com.github.monster.core.ocr.core.OcrEntry;
+import com.github.monster.core.ocr.core.OcrResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -22,24 +26,24 @@ public class OcrUtil {
         try (Ocr ocr = new Ocr(new File(exePath), arguments)) {
             OcrResponse resp = ocr.runOcr(new File(imgPath));
             // 读取结果
-            if (resp.code == OcrCode.OK) {
-                for (OcrEntry entry : resp.data) {
+            if (resp.getCode() == OcrCode.OK) {
+                for (OcrEntry entry : resp.getData()) {
 
-                    log.info("识别到: {}", entry.text);
+                    log.info("识别到: {}", entry.getText());
 
-                    if (entry.text.equals(aimWord)) {
+                    if (entry.getText().equals(aimWord)) {
                         return entry;
                     }
                     if (FuzzyWords != null) {
                         for (String fuzzyWord : FuzzyWords) {
-                            if (entry.text.equals(fuzzyWord)) {
+                            if (entry.getText().equals(fuzzyWord)) {
                                 return entry;
                             }
                         }
                     }
                 }
             } else {
-                log.info("error: code=" + resp.code + " msg=" + resp.msg);
+                log.info("error: code=" + resp.getCode() + " msg=" + resp.getMsg());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,10 +60,10 @@ public class OcrUtil {
         try (Ocr ocr = new Ocr(new File(exePath), arguments)) {
             OcrResponse resp = ocr.runOcr(new File(imgPath));
             // 读取结果
-            if (resp.code == OcrCode.OK) {
+            if (resp.getCode() == OcrCode.OK) {
                 return resp;
             } else {
-                log.info("error: code=" + resp.code + " msg=" + resp.msg);
+                log.info("error: code=" + resp.getCode() + " msg=" + resp.getMsg());
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,6 +1,7 @@
-package com.github.monster.core.ocr;
+package com.github.monster.core.ocr.core;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+@Slf4j
 public class Ocr implements AutoCloseable {
     Process p;
     BufferedReader reader;
@@ -40,7 +42,7 @@ public class Ocr implements AutoCloseable {
             throw new IllegalArgumentException("参数不能含有非 ASCII 字符");
         }
 
-        System.out.println("当前参数：" + commands);
+        log.debug("当前参数：" + commands);
 
         File workingDir = exePath.getParentFile();
         ProcessBuilder pb = new ProcessBuilder(exePath.toString(), commands);
@@ -57,13 +59,12 @@ public class Ocr implements AutoCloseable {
         ocrReady = false;
         while (!ocrReady) {
             line = reader.readLine();
-//            System.out.println(line);
             if (line.contains("OCR init completed")) {
                 ocrReady = true;
             }
         }
 
-        System.out.println("初始化OCR成功");
+        log.info("初始化OCR成功");
     }
 
     public OcrResponse runOcr(File imgFile) throws IOException {
@@ -87,7 +88,7 @@ public class Ocr implements AutoCloseable {
         writer.write("\r\n");
         writer.flush();
         String resp = reader.readLine();
-        System.out.println(resp);
+        log.debug(resp);
 
         Map rawJsonObj = gson.fromJson(resp, Map.class);
         if (rawJsonObj.get("data") instanceof String) {

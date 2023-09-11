@@ -3,11 +3,11 @@ package com.github.monster.service;
 
 import com.github.monster.core.constant.ImgConstant;
 import com.github.monster.core.enums.CoordinateEnum;
-import com.github.monster.core.ocr.OcrResponse;
+import com.github.monster.core.ocr.core.OcrResponse;
 import com.github.monster.core.util.ImageUtil;
 import com.github.monster.device.cli.AdbCli;
 import com.github.monster.device.cli.DeviceCli;
-import com.github.monster.core.ocr.OcrEntry;
+import com.github.monster.core.ocr.core.OcrEntry;
 import com.github.monster.core.ocr.OcrUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

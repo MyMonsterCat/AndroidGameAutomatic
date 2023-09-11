@@ -1,4 +1,4 @@
-package com.github.monster.core.ocr;
+package com.github.monster.core.ocr.core;
 
 public class OcrCode {
     public static final int OK = 100;
