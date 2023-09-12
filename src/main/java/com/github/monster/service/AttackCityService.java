@@ -19,17 +19,17 @@ import java.util.List;
 @Component
 @Slf4j
 public class AttackCityService {
-    @Resource
-    private DeviceCli deviceCli;
-    @Resource
-    private AdbCli adbCli;
+//    @Resource
+//    private DeviceCli deviceCli;
+//    @Resource
+//    private AdbCli adbCli;
 
     @SneakyThrows
     public void attackCityStatistics() {
         // 战报
-        deviceCli.touchDown(58, 641);
-        deviceCli.touchUp(58, 641);
-        Thread.sleep(1000);
+//        deviceCli.touchDown(58, 641);
+//        deviceCli.touchUp(58, 641);
+//        Thread.sleep(1000);
 //        // 同盟日志
 //        deviceCli.touchDown(1443, 811);
 //        deviceCli.touchUp(1444, 811);
@@ -39,13 +39,29 @@ public class AttackCityService {
 //        deviceCli.touchUp(295, 130);
 //        Thread.sleep(1000);
         // 开始OCR识别
-        String imgPath = ImgConstant.IMG_PACKAGE + System.currentTimeMillis() + ".png";
-        log.debug("图片路径为{}", imgPath);
-        OcrClick(imgPath, 10, 160, 1000, 700);
+//        String imgPath = ImgConstant.IMG_PACKAGE + System.currentTimeMillis() + ".png";
+//        log.debug("图片路径为{}", imgPath);
+//        OcrClick(imgPath, 10, 160, 1000, 700);
+
+        String imgPath = System.getProperty("user.dir") + "/simg/home.png";
+        String rePath = System.getProperty("user.dir") + "/rimg/home.png";
+        Ocr(imgPath, rePath, 144, 976, 120, 35);
 
         // 指定某个区域，如果识别到就点击这个词所在的坐标
 //        shotCropperOcrClick(System.currentTimeMillis() + ".png", "建业", null, 770, 370, 300, 200, CoordinateEnum.BottomRight);
 
+    }
+
+    @SneakyThrows
+    private void Ocr(String imgPath, String rePath, int x, int y, int width, int height) {
+        // 裁剪
+        String cityName = ImageUtil.imageCropper(imgPath, rePath, x, y, width, height);
+        // ocr识别
+        OcrResponse ocrResponse = OcrUtil.startOcrAllWord(cityName);
+        OcrEntry[] data = ocrResponse.getData();
+        for (OcrEntry entry : data) {
+            log.debug("{}", entry.getText());
+        }
     }
 
     /**
@@ -63,51 +79,51 @@ public class AttackCityService {
      */
     @SneakyThrows
     private void shotCropperOcrClick(String imgPath, String aimWord, List<String> FuzzyWords, int x, int y, int width, int height, CoordinateEnum coordinateEnum) {
-        // 截屏
-        deviceCli.screenShot(imgPath);
-        // 裁剪
-        String cityName = ImageUtil.imageCropper(imgPath, x, y, width, height);
-        // ocr识别
-        OcrEntry findWord = OcrUtil.startOcrFindWord(cityName, aimWord, FuzzyWords);
-        if (findWord == null) {
-            log.error("未能成功识别关键词:{} , 模糊词:{}", aimWord, FuzzyWords);
-            return;
-        }
-        int[][] box = findWord.getBox();
-        int aimX = x;
-        int aimY = y;
-        switch (coordinateEnum) {
-            case Center -> {
-                int[] calculate = calculateCoordinates(findWord, x, y);
-                aimX = calculate[0];
-                aimY = calculate[1];
-            }
-            case BottomRight -> {
-                aimX = x + box[3][0];
-                aimY = y + box[3][1];
-            }
-        }
-        // 点击目标地点
-        deviceCli.touchDown(aimX, aimY);
-        deviceCli.touchUp(aimX, aimY);
-
-        deviceCli.touchDown(x, y);
-        deviceCli.touchUp(x, y);
+//        // 截屏
+//        deviceCli.screenShot(imgPath);
+//        // 裁剪
+//        String cityName = ImageUtil.imageCropper(imgPath, x, y, width, height);
+//        // ocr识别
+//        OcrEntry findWord = OcrUtil.startOcrFindWord(cityName, aimWord, FuzzyWords);
+//        if (findWord == null) {
+//            log.error("未能成功识别关键词:{} , 模糊词:{}", aimWord, FuzzyWords);
+//            return;
+//        }
+//        int[][] box = findWord.getBox();
+//        int aimX = x;
+//        int aimY = y;
+//        switch (coordinateEnum) {
+//            case Center -> {
+//                int[] calculate = calculateCoordinates(findWord, x, y);
+//                aimX = calculate[0];
+//                aimY = calculate[1];
+//            }
+//            case BottomRight -> {
+//                aimX = x + box[3][0];
+//                aimY = y + box[3][1];
+//            }
+//        }
+//        // 点击目标地点
+//        deviceCli.touchDown(aimX, aimY);
+//        deviceCli.touchUp(aimX, aimY);
+//
+//        deviceCli.touchDown(x, y);
+//        deviceCli.touchUp(x, y);
     }
 
 
     @SneakyThrows
     private void OcrClick(String imgPath, int x, int y, int width, int height) {
-        // 截屏
-        deviceCli.screenShot(imgPath);
-        // 裁剪
-        String cityName = ImageUtil.imageCropper(imgPath, x, y, width, height);
-        // ocr识别
-        OcrResponse ocrResponse = OcrUtil.startOcrAllWord(cityName);
-        OcrEntry[] data = ocrResponse.getData();
-        for (OcrEntry entry : data) {
-            log.debug("{}", entry.getText());
-        }
+//        // 截屏
+//        deviceCli.screenShot(imgPath);
+//        // 裁剪
+//        String cityName = ImageUtil.imageCropper(imgPath, x, y, width, height);
+//        // ocr识别
+//        OcrResponse ocrResponse = OcrUtil.startOcrAllWord(cityName);
+//        OcrEntry[] data = ocrResponse.getData();
+//        for (OcrEntry entry : data) {
+//            log.debug("{}", entry.getText());
+//        }
 
     }
 

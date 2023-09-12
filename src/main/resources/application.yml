@@ -2,8 +2,8 @@ server:
   port: 20000
 # adb是否加载
 adb-loader:
-  device-cli: true
-  adb-cli: true
+  device-cli: false
+  adb-cli: false
 # 日志配置
 logging:
   level:

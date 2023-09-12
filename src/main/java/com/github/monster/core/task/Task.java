@@ -44,14 +44,15 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
-        log.info("当前任务名称：{}", name);
         taskStart();
     }
 
     private void taskStart() {
         // 执行任务
         if (taskExecution != null) {
+            log.info("开始执行任务{}", name);
             taskExecution.execute();
+            log.info("任务结束...");
         }
     }
 }

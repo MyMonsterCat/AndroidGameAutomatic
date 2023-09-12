@@ -27,8 +27,9 @@ public class CollectController {
     @GetMapping("/test")
     public void startAttackCityStatistics() {
 
-        Date startTime = DateUtil.offsetMillisecond(new Date(), 10).toCalendar().getTime();
+        Date startTime = DateUtil.offsetSecond(new Date(), 1).toCalendar().getTime();
 
+        System.out.println(startTime);
         Task task = new Task("test", startTime, 0, 0, () -> {
             AttackCityService sthService = SpringContextUtil.getBean(AttackCityService.class);
             sthService.attackCityStatistics();

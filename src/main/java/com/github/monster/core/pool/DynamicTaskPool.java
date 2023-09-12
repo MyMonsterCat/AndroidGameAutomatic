@@ -77,11 +77,11 @@ public class DynamicTaskPool {
 
 
     /**
-     * 是否有任务正在进行
+     * 正在进行的任务数
      *
      * @return
      */
-    public boolean isActive() {
-        return threadPoolTaskScheduler.getActiveCount() > 0;
+    public int isActive() {
+        return threadPoolTaskScheduler.getActiveCount();
     }
 }
