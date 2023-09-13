@@ -1,4 +1,4 @@
-package com.github.monster.entity;
+package com.github.monster.core.entity;
 
 import com.github.monster.core.constant.ImgConstant;
 import lombok.Getter;

@@ -7,7 +7,7 @@ import com.github.monster.core.ocr.core.OcrEntry;
 import com.github.monster.core.ocr.core.OcrResponse;
 import com.github.monster.core.util.ImageUtil;
 import com.github.monster.device.cli.DeviceCli;
-import com.github.monster.entity.Target;
+import com.github.monster.core.entity.Target;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
