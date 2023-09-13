@@ -50,9 +50,10 @@ public class Task implements Runnable {
     private void taskStart() {
         // 执行任务
         if (taskExecution != null) {
-            log.info("开始执行任务{}", name);
             taskExecution.execute();
-            log.info("任务结束...");
+            log.info("Task --> 任务 {} 执行完毕！", name);
+        } else {
+            log.error("Task --> 任务 {} 主体为空，不予执行！", name);
         }
     }
 }

@@ -1,13 +1,18 @@
 server:
   port: 20000
+
 # adb是否加载
 adb-loader:
   device-cli: false
   adb-cli: false
+
 # 日志配置
 logging:
   level:
-    com.github.monster: debug
+    com.github.monster:
+      core.ocr: info
+      core.pool: debug
+      service: info
   charset:
     # 输出控制台编码
     console: UTF-8

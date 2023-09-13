@@ -6,10 +6,10 @@ import lombok.SneakyThrows;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Objects;
 
 /**
  * @author Monster
- * @date 2023/3/14 14:27
  */
 public class ImageUtil {
 
@@ -21,7 +21,6 @@ public class ImageUtil {
      * @param y       开始坐标Y
      * @param width   长度
      * @param height  高度
-     * @return
      */
     @SneakyThrows
     public static String imageCropper(String imgPath, String rePath, Integer x, Integer y, Integer width, Integer height) {
@@ -31,15 +30,11 @@ public class ImageUtil {
 
         // 裁剪图像
         BufferedImage croppedImage = originalImage.getSubimage(x, y, width, height);
-        File output = null;
+        File output;
         // 保存裁剪后的图像
-        if (rePath == null) {
-            output = new File(imgPath);
-        } else {
-            output = new File(rePath);
-        }
+        output = new File(Objects.requireNonNullElse(rePath, imgPath));
         ImageIO.write(croppedImage, "png", output);
-        return imgPath;
+        return rePath;
 
     }
 

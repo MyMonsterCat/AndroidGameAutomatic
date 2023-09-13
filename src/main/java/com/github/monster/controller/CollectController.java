@@ -15,7 +15,6 @@ import java.util.Date;
 
 /**
  * @author Monster
- * @date 2023/9/5 15:00
  */
 @RestController
 @RequestMapping()
@@ -28,8 +27,6 @@ public class CollectController {
     public void startAttackCityStatistics() {
 
         Date startTime = DateUtil.offsetSecond(new Date(), 1).toCalendar().getTime();
-
-        System.out.println(startTime);
         Task task = new Task("test", startTime, 0, 0, () -> {
             AttackCityService sthService = SpringContextUtil.getBean(AttackCityService.class);
             sthService.attackCityStatistics();

@@ -13,7 +13,7 @@ public class TaskConfig {
     /**
      * 用来存入线程执行情况, 方便于停止定时任务时使用
      */
-    public static ConcurrentHashMap<String, ScheduledFuture> cache = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, ScheduledFuture<?>> cache = new ConcurrentHashMap<>();
 
     @Bean(destroyMethod = "shutdown")
     public ThreadPoolTaskScheduler threadPoolTaskScheduler() {

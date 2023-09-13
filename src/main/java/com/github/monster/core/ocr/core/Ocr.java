@@ -1,6 +1,7 @@
 package com.github.monster.core.ocr.core;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.net.*;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.IOException;
 
+@Slf4j
 public class Ocr implements AutoCloseable {
     // 公共
     Gson gson;
@@ -32,10 +34,11 @@ public class Ocr implements AutoCloseable {
 
     /**
      * 使用套接字模式初始化
-     * @param serverAddr
-     * @param serverPort
-     * @param arguments
-     * @throws IOException
+     *
+     * @param serverAddr 服务地址
+     * @param serverPort 服务端口
+     * @param arguments 参数
+     * @throws IOException 异常
      */
     public Ocr(String serverAddr, int serverPort, Map<String, Object> arguments) throws IOException {
         this.mode = OcrMode.SOCKET_SERVER;
@@ -48,9 +51,10 @@ public class Ocr implements AutoCloseable {
 
     /**
      * 使用本地进程模式初始化
-     * @param exePath
-     * @param arguments
-     * @throws IOException
+     *
+     * @param exePath 可执行文件路径
+     * @param arguments 参数
+     * @throws IOException 异常
      */
     public Ocr(File exePath, Map<String, Object> arguments) throws IOException {
         this.mode = OcrMode.LOCAL_PROCESS;
@@ -62,7 +66,7 @@ public class Ocr implements AutoCloseable {
     private void initOcr() throws IOException {
         gson = new Gson();
 
-        String commands = "";
+        StringBuilder commands = new StringBuilder();
         if (arguments != null) {
             for (Map.Entry<String, Object> entry : arguments.entrySet()) {
                 String command = "--" + entry.getKey() + "=";
@@ -71,21 +75,21 @@ public class Ocr implements AutoCloseable {
                 } else {
                     command += entry.getValue().toString();
                 }
-                commands += ' ' + command;
+                commands.append(' ').append(command);
             }
         }
 
-        if (!StandardCharsets.US_ASCII.newEncoder().canEncode(commands)) {
+        if (!StandardCharsets.US_ASCII.newEncoder().canEncode(commands.toString())) {
             throw new IllegalArgumentException("参数不能含有非 ASCII 字符");
         }
 
-        System.out.println("当前参数：" + (commands.isEmpty() ? "空": commands));
+        log.debug("OCR --> 当前参数：" + ((commands.length() == 0) ? "空" : commands.toString()));
 
 
         switch (this.mode) {
-            case LOCAL_PROCESS: {
+            case LOCAL_PROCESS -> {
                 File workingDir = exePath.getParentFile();
-                ProcessBuilder pb = new ProcessBuilder(exePath.toString(), commands);
+                ProcessBuilder pb = new ProcessBuilder(exePath.toString(), commands.toString());
                 pb.directory(workingDir);
                 pb.redirectErrorStream(true);
                 process = pb.start();
@@ -94,7 +98,7 @@ public class Ocr implements AutoCloseable {
                 OutputStream stdin = process.getOutputStream();
                 reader = new BufferedReader(new InputStreamReader(stdout, StandardCharsets.UTF_8));
                 writer = new BufferedWriter(new OutputStreamWriter(stdin, StandardCharsets.UTF_8));
-                String line = "";
+                String line;
                 ocrReady = false;
                 while (!ocrReady) {
                     line = reader.readLine();
@@ -102,16 +106,14 @@ public class Ocr implements AutoCloseable {
                         ocrReady = true;
                     }
                 }
-                System.out.println("初始化OCR成功");
-                break;
+                log.debug("OCR --> 初始化OCR成功");
             }
-            case SOCKET_SERVER: {
+            case SOCKET_SERVER -> {
                 clientSocket = new Socket(serverAddr, serverPort);
                 reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
                 writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
                 ocrReady = true;
-                System.out.println("已连接到OCR套接字服务器，假设服务器已初始化成功");
-                break;
+                log.debug("OCR --> 已连接到OCR套接字服务器，假设服务器已初始化成功");
             }
         }
 
@@ -120,13 +122,12 @@ public class Ocr implements AutoCloseable {
 
     /**
      * 使用图片路径进行 OCR
-     * @param imgFile
-     * @return
-     * @throws IOException
+     *
+     * @param imgFile 图片路径
      */
     public OcrResponse runOcr(File imgFile) throws IOException {
         if (mode == OcrMode.SOCKET_SERVER && !isLoopback) {
-            System.out.println("套接字模式下服务器不在本地，发送路径可能失败");
+            log.debug("OCR --> 套接字模式下服务器不在本地，发送路径可能失败");
         }
         Map<String, String> reqJson = new HashMap<>();
         reqJson.put("image_path", imgFile.toString());
@@ -135,12 +136,10 @@ public class Ocr implements AutoCloseable {
 
     /**
      * 使用剪贴板中图片进行 OCR
-     * @return
-     * @throws IOException
      */
     public OcrResponse runOcrOnClipboard() throws IOException {
         if (mode == OcrMode.SOCKET_SERVER && !isLoopback) {
-            System.out.println("套接字模式下服务器不在本地，发送剪贴板可能失败");
+            log.debug("OCR --> 套接字模式下服务器不在本地，发送剪贴板可能失败");
         }
         Map<String, String> reqJson = new HashMap<>();
         reqJson.put("image_path", "clipboard");
@@ -149,9 +148,8 @@ public class Ocr implements AutoCloseable {
 
     /**
      * 使用 Base64 编码的图片进行 OCR
-     * @param base64str
-     * @return
-     * @throws IOException
+     *
+     * @param base64str Base64 编码的图片
      */
     public OcrResponse runOcrOnImgBase64(String base64str) throws IOException {
         Map<String, String> reqJson = new HashMap<>();
@@ -161,9 +159,8 @@ public class Ocr implements AutoCloseable {
 
     /**
      * 使用图片 Byte 数组进行 OCR
-     * @param fileBytes
-     * @return
-     * @throws IOException
+     *
+     * @param fileBytes 图片 Byte 数组
      */
     public OcrResponse runOcrOnImgBytes(byte[] fileBytes) throws IOException {
         return this.runOcrOnImgBase64(Base64.getEncoder().encodeToString(fileBytes));
@@ -180,11 +177,11 @@ public class Ocr implements AutoCloseable {
         writer.write("\r\n");
         writer.flush();
         String resp = reader.readLine();
-        System.out.println(resp);
+        log.debug("OCR --> 原始数据resp:{}", resp);
 
         Map rawJsonObj = gson.fromJson(resp, Map.class);
         if (rawJsonObj.get("data") instanceof String) {
-            return new OcrResponse((int)Double.parseDouble(rawJsonObj.get("code").toString()), rawJsonObj.get("data").toString());
+            return new OcrResponse((int) Double.parseDouble(rawJsonObj.get("code").toString()), rawJsonObj.get("data").toString());
         }
 
         return gson.fromJson(resp, OcrResponse.class);
@@ -196,26 +193,19 @@ public class Ocr implements AutoCloseable {
         try {
             InetAddress address = InetAddress.getByName(serverAddr);
             NetworkInterface networkInterface = NetworkInterface.getByInetAddress(address);
-            if (networkInterface != null && networkInterface.isLoopback()) {
-                this.isLoopback = true;
-            } else {
-                this.isLoopback = false;
-            }
+            this.isLoopback = networkInterface != null && networkInterface.isLoopback();
         } catch (Exception e) {
             // 非关键路径
-            System.out.println("套接字模式，未能确认服务端是否在本地");
+            log.debug("OCR --> 套接字模式，未能确认服务端是否在本地");
         }
-        System.out.println("套接字模式下，服务端在本地：" + isLoopback);
+        log.debug("OCR --> 套接字模式下，服务端在本地：" + isLoopback);
     }
 
     private boolean isAlive() {
-        switch (this.mode) {
-            case LOCAL_PROCESS:
-                return process.isAlive();
-            case SOCKET_SERVER:
-                return clientSocket.isConnected();
-        }
-        return false;
+        return switch (this.mode) {
+            case LOCAL_PROCESS -> process.isAlive();
+            case SOCKET_SERVER -> clientSocket.isConnected();
+        };
     }
 
 
@@ -223,17 +213,13 @@ public class Ocr implements AutoCloseable {
     public void close() {
         if (isAlive()) {
             switch (this.mode) {
-                case LOCAL_PROCESS: {
-                    process.destroy();
-                    break;
-                }
-                case SOCKET_SERVER: {
+                case LOCAL_PROCESS -> process.destroy();
+                case SOCKET_SERVER -> {
                     try {
                         clientSocket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    break;
                 }
             }
         }

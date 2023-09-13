@@ -1,26 +1,15 @@
 package com.github.monster.core.ocr.core;
 
 import lombok.Data;
-import lombok.Getter;
-
-import java.util.Arrays;
+import lombok.ToString;
 
 @Data
+@ToString
 public class OcrResponse {
     private int code;
     private OcrEntry[] data;
     private String msg;
     private String hotUpdate;
-
-    @Override
-    public String toString() {
-        return "OcrResponse{" +
-                "code=" + code +
-                ", data=" + Arrays.toString(data) +
-                ", msg='" + msg + '\'' +
-                ", hotUpdate='" + hotUpdate + '\'' +
-                '}';
-    }
 
     public OcrResponse() {
     }

@@ -42,7 +42,7 @@ public class EscapedWriter extends FilterWriter {
      * 单个字符
      */
     public void write(int ch) throws IOException {
-        if (ch >= 32 && ch <= 126 || ch == cr || ch == lf || ch == ' ') {
+        if (ch >= 32 && ch <= 126 || ch == cr || ch == lf) {
             super.write(ch);
             return;
         }
