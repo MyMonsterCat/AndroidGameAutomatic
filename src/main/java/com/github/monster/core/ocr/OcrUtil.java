@@ -13,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 @Slf4j
@@ -37,31 +34,32 @@ public class OcrUtil {
         // 截屏
         deviceCli.screenShot(imgPath);
         // 裁剪
-        String cityName = ImageUtil.imageCropper(imgPath, null, target.getX(), target.getY(), target.getWidth(), target.getHeight());
+        String cityName = ImageUtil.imageCropper(imgPath, null, target.getStartX(), target.getStartY(), target.getEndX(), target.getEndY());
         // ocr识别
-        OcrEntry findWord = OcrUtil.Ocr(cityName, target);
-        if (findWord == null) {
+        List<OcrEntry> findWords = OcrUtil.Ocr(cityName, target);
+        if (findWords == null) {
             log.error("未能成功识别关键词:{} , 模糊词:{}", target.getAimWord(), target.getFuzzyWords());
             return false;
         }
-        int[][] box = findWord.getBox();
-        int aimX = target.getX();
-        int aimY = target.getY();
-        switch (coordinateEnum) {
-            case Center -> {
-                int[] calculate = calculateCoordinates(findWord, target.getX(), target.getY());
-                aimX = calculate[0];
-                aimY = calculate[1];
+        for (OcrEntry findWord : findWords) {
+            int[][] box = findWord.getBox();
+            int aimX = target.getStartX();
+            int aimY = target.getStartY();
+            switch (coordinateEnum) {
+                case Center -> {
+                    int[] calculate = calculateCoordinates(findWord, target.getStartX(), target.getStartY());
+                    aimX = calculate[0];
+                    aimY = calculate[1];
+                }
+                case BottomRight -> {
+                    aimX = target.getStartX() + box[3][0];
+                    aimY = target.getStartY() + box[3][1];
+                }
             }
-            case BottomRight -> {
-                aimX = target.getX() + box[3][0];
-                aimY = target.getY() + box[3][1];
-            }
+            // 点击目标地点
+            deviceCli.touchDown(aimX, aimY);
+            deviceCli.touchUp(aimX, aimY);
         }
-        // 点击目标地点
-        deviceCli.touchDown(aimX, aimY);
-        deviceCli.touchUp(aimX, aimY);
-
         return true;
     }
 
@@ -72,9 +70,9 @@ public class OcrUtil {
      * @param target  目标词汇对象
      * @return 目标词汇信息
      */
-    public static OcrEntry cropperAndOcr(String imgPath, Target target) {
+    public static List<OcrEntry> cropperAndOcr(String imgPath, Target target) {
         // 裁剪
-        String newPath = ImageUtil.imageCropper(imgPath, target.getCachePath(), target.getX(), target.getY(), target.getWidth(), target.getHeight());
+        String newPath = ImageUtil.imageCropper(imgPath, target.getCachePath(), target.getStartX(), target.getStartY(), target.getEndX(), target.getEndY());
         // OCR识别
         return Ocr(newPath, target);
     }
@@ -86,13 +84,15 @@ public class OcrUtil {
      * @param target  目标词汇对象
      * @return 目标词汇信息
      */
-    public static OcrEntry Ocr(String imgPath, Target target) {
+    public static List<OcrEntry> Ocr(String imgPath, Target target) {
+
+        ArrayList<OcrEntry> result = new ArrayList<>();
         // 可选的配置项
         Map<String, Object> arguments = new HashMap<>();
-        // arguments.put("config_path", "models/config_en.txt");识别多国语言，默认中文
-        // arguments.put("use_angle_cls", true);启用方向分类，必须与cls值相同，默认关闭
-        // arguments.put("cls", true);启用cls方向分类，识别方向不是正朝上的图片，默认关闭
-        // arguments.put("enable_mkldnn", false);启用CPU推理加速，关掉可以减少内存占用，但会降低速度，默认开启
+        // arguments.put("config_path", "models/config_en.txt");// 识别多国语言，默认中文
+//         arguments.put("use_angle_cls", true);// 启用方向分类，必须与cls值相同，默认关闭
+//         arguments.put("cls", true);// 启用cls方向分类，识别方向不是正朝上的图片，默认关闭
+        // arguments.put("enable_mkldnn", false);// 启用CPU推理加速，关掉可以减少内存占用，但会降低速度，默认开启
         // 初始化 OCR
         try (Ocr ocr = new Ocr(new File(exePath), arguments)) {
             OcrResponse resp = ocr.runOcr(new File(imgPath));
@@ -103,14 +103,14 @@ public class OcrUtil {
                 for (OcrEntry entry : data) {
                     // 比较精确词
                     if (Objects.equals(entry.getText(), target.getAimWord())) {
-                        return entry;
+                        result.add(entry);
                     }
                     // 比较模糊词
                     List<String> fuzzyWords = target.getFuzzyWords();
                     if (fuzzyWords != null) {
                         for (String fuzzyWord : fuzzyWords) {
                             if (entry.getText().equals(fuzzyWord)) {
-                                return entry;
+                                result.add(entry);
                             }
                         }
                     }
@@ -122,7 +122,7 @@ public class OcrUtil {
             e.printStackTrace();
             log.error("初始化OCR错误: msg={}", e.getMessage());
         }
-        return null;
+        return result;
     }
 
     /**

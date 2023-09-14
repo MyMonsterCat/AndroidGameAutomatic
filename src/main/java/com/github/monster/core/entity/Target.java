@@ -18,19 +18,19 @@ public class Target {
     /**
      * 左上角起点X坐标
      */
-    private int x;
+    private int startX;
     /**
      * 左上角起点Y坐标
      */
-    private int y;
+    private int startY;
     /**
-     * 长度
+     * 右下角X坐标
      */
-    private int width;
+    private int endX;
     /**
-     * 高度
+     * 右下角Y坐标
      */
-    private int height;
+    private int endY;
     /**
      * 目标单词
      */
@@ -40,21 +40,21 @@ public class Target {
      */
     private List<String> FuzzyWords;
 
-    public Target(int x, int y, int width, int height, String aimWord, List<String> fuzzyWords) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public Target(int startX, int startY, int endX, int endY, String aimWord) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
         this.aimWord = aimWord;
-        FuzzyWords = fuzzyWords;
     }
 
-    public Target(int x, int y, int width, int height, String aimWord) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    public Target(int startX, int startY, int endX, int endY, String aimWord, List<String> fuzzyWords) {
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
         this.aimWord = aimWord;
+        FuzzyWords = fuzzyWords;
     }
 
     public String getCachePath(){

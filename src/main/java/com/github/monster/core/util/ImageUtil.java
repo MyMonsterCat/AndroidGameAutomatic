@@ -17,19 +17,19 @@ public class ImageUtil {
      * 图像裁剪
      *
      * @param imgPath 文件地址（包含名称）
-     * @param x       开始坐标X
-     * @param y       开始坐标Y
-     * @param width   长度
-     * @param height  高度
+     * @param startX  左上角坐标X
+     * @param startY  左上角坐标Y
+     * @param endX    右下角坐标X
+     * @param endY    右下角坐标Y
      */
     @SneakyThrows
-    public static String imageCropper(String imgPath, String rePath, Integer x, Integer y, Integer width, Integer height) {
+    public static String imageCropper(String imgPath, String rePath, Integer startX, Integer startY, Integer endX, Integer endY) {
 
         // 读取原始图像
         BufferedImage originalImage = ImageIO.read(new File(imgPath));
 
         // 裁剪图像
-        BufferedImage croppedImage = originalImage.getSubimage(x, y, width, height);
+        BufferedImage croppedImage = originalImage.getSubimage(startX, startY, endX - startX, endY - startY);
         File output;
         // 保存裁剪后的图像
         output = new File(Objects.requireNonNullElse(rePath, imgPath));
