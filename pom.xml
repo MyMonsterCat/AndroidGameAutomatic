@@ -17,6 +17,12 @@
     </properties>
 
     <dependencies>
+        <!--  OCR识别  -->
+        <dependency>
+            <groupId>com.github.monster</groupId>
+            <artifactId>RapidOcr-Java</artifactId>
+            <version>0.0.2</version>
+        </dependency>
 
         <!-- 模拟器控制-->
         <dependency>

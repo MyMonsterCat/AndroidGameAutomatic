@@ -3,14 +3,13 @@ server:
 
 # adb是否加载
 adb-loader:
-  device-cli: false
+  device-cli: true
   adb-cli: false
 
 # 日志配置
 logging:
   level:
     com.github.monster:
-      core.ocr: info
       core.pool: debug
       service: info
   charset:
