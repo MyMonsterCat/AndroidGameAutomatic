@@ -3,7 +3,7 @@ server:
 
 # adb是否加载
 adb-loader:
-  miniTouch-cli: false
+  miniTouch-cli: true
   adb-cli: false
 
 # 日志配置

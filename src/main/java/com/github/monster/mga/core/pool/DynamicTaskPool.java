@@ -72,7 +72,9 @@ public class DynamicTaskPool {
     }
 
     public void stopAll() {
-        if (TaskConfig.cache.isEmpty()) return;
+        if (TaskConfig.cache.isEmpty()) {
+            return;
+        }
         TaskConfig.cache.values().forEach(scheduledFuture -> scheduledFuture.cancel(true));
     }
 
