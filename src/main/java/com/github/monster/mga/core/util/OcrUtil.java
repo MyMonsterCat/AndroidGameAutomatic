@@ -27,7 +27,9 @@ public class OcrUtil {
         // 裁剪
         String newPath = ImageUtil.imageCropper(imgPath, target.getCachePath(), target.getStartX(), target.getStartY(), target.getEndX(), target.getEndY());
         // OCR识别
-        return Ocr(newPath, target);
+        List<TextBlock> result = Ocr(newPath, target);
+        log.debug("{} 识别结果为 {}", imgPath, result);
+        return result;
     }
 
 
@@ -40,7 +42,7 @@ public class OcrUtil {
      */
     public static List<TextBlock> Ocr(String imgPath, Target target) {
         ArrayList<TextBlock> result = new ArrayList<>();
-        OcrResult ocrResult = com.github.monster.OcrUtil.runOcr(imgPath);
+        OcrResult ocrResult = com.github.monster.ocr.OcrUtil.runOcr(imgPath);
         for (TextBlock textBlock : ocrResult.getTextBlocks()) {
             String text = textBlock.getText();
             // 比较精确词

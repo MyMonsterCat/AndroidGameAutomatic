@@ -3,15 +3,16 @@ server:
 
 # adb是否加载
 adb-loader:
-  minitTouch-cli: true
+  miniTouch-cli: false
   adb-cli: false
 
 # 日志配置
 logging:
   level:
     com.github.monster:
+      ocr: debug
       touch: debug
-      mga.core.pool: debug
+      mga.core: debug
       mga.service: info
   charset:
     # 输出控制台编码

@@ -24,18 +24,17 @@ public class ImageUtil {
      */
     @SneakyThrows
     public static String imageCropper(String imgPath, String rePath, Integer startX, Integer startY, Integer endX, Integer endY) {
-
         // 读取原始图像
         BufferedImage originalImage = ImageIO.read(new File(imgPath));
-
         // 裁剪图像
         BufferedImage croppedImage = originalImage.getSubimage(startX, startY, endX - startX, endY - startY);
         File output;
         // 保存裁剪后的图像
         output = new File(Objects.requireNonNullElse(rePath, imgPath));
         ImageIO.write(croppedImage, "png", output);
+        // JVM退出时删除
+        output.deleteOnExit();
         return rePath;
-
     }
 
     /**
