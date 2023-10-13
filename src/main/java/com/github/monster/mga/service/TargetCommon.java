@@ -1,6 +1,6 @@
-package com.github.monster.service;
+package com.github.monster.mga.service;
 
-import com.github.monster.core.entity.Target;
+import com.github.monster.mga.core.entity.Target;
 
 /**
  * 常用词汇

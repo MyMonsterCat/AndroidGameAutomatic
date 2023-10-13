@@ -1,4 +1,4 @@
-package com.github.monster.core.enums;
+package com.github.monster.mga.core.enums;
 
 public enum CoordinateEnum {
     /**

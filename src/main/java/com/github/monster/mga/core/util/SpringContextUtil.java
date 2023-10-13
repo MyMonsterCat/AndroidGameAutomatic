@@ -1,4 +1,4 @@
-package com.github.monster.core.util;
+package com.github.monster.mga.core.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

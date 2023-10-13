@@ -1,4 +1,4 @@
-package com.github.monster.service;
+package com.github.monster.mga.service;
 
 public enum TypeEnum {
     /**

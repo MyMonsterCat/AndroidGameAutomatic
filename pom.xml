@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>SimulatorControl</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.github.monster.mga</groupId>
+    <artifactId>MobileGameAutomatic</artifactId>
+    <version>0.0.1</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -27,8 +27,8 @@
         <!-- 模拟器控制-->
         <dependency>
             <groupId>com.github.monster</groupId>
-            <artifactId>device-touch</artifactId>
-            <version>0.0.2</version>
+            <artifactId>AndroidTouch</artifactId>
+            <version>0.0.3</version>
         </dependency>
 
         <!-- 常规 -->
@@ -109,7 +109,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.github.monster.STHApplication</mainClass>
+                    <mainClass>com.github.monster.mga.MGAApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

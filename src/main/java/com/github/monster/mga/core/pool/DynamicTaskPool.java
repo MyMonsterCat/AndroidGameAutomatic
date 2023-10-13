@@ -1,6 +1,6 @@
-package com.github.monster.core.pool;
+package com.github.monster.mga.core.pool;
 
-import com.github.monster.core.task.Task;
+import com.github.monster.mga.core.task.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;

@@ -1,16 +1,11 @@
-package com.github.monster.service;
+package com.github.monster.mga.service;
 
-import com.benjaminwan.ocrlibrary.TextBlock;
-import com.github.monster.core.constant.ImgConstant;
-import com.github.monster.core.entity.Target;
-import com.github.monster.core.util.OcrUtil;
 import com.github.monster.touch.device.cli.MiniTouchCli;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Component
 @Slf4j

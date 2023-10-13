@@ -1,8 +1,8 @@
-package com.github.monster.core.util;
+package com.github.monster.mga.core.util;
 
 import com.benjaminwan.ocrlibrary.OcrResult;
 import com.benjaminwan.ocrlibrary.TextBlock;
-import com.github.monster.core.entity.Target;
+import com.github.monster.mga.core.entity.Target;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

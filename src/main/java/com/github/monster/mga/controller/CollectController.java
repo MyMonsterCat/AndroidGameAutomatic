@@ -1,10 +1,10 @@
-package com.github.monster.controller;
+package com.github.monster.mga.controller;
 
 import cn.hutool.core.date.DateUtil;
-import com.github.monster.core.pool.DynamicTaskPool;
-import com.github.monster.core.task.Task;
-import com.github.monster.core.util.SpringContextUtil;
-import com.github.monster.service.AttackCityService;
+import com.github.monster.mga.core.pool.DynamicTaskPool;
+import com.github.monster.mga.core.task.Task;
+import com.github.monster.mga.core.util.SpringContextUtil;
+import com.github.monster.mga.service.AttackCityService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

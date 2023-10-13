@@ -1,4 +1,4 @@
-package com.github.monster.core.constant;
+package com.github.monster.mga.core.constant;
 
 /**
  * 分辨率常量

@@ -1,4 +1,4 @@
-package com.github.monster.core.task;
+package com.github.monster.mga.core.task;
 
 @FunctionalInterface
 public interface TaskExecution {

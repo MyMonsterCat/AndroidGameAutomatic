@@ -1,4 +1,4 @@
-package com.github.monster.core.pool;
+package com.github.monster.mga.core.pool;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

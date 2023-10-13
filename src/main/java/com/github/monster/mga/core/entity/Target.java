@@ -1,6 +1,6 @@
-package com.github.monster.core.entity;
+package com.github.monster.mga.core.entity;
 
-import com.github.monster.core.constant.ImgConstant;
+import com.github.monster.mga.core.constant.ImgConstant;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
