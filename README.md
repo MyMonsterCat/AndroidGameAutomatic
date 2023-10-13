@@ -1,6 +1,6 @@
 # MGA
 
-MobileGameAutomatic，简称MGA，通过控制安卓设备来编写自动化游戏脚本
+AndroidGameAutomatic，简称MGA，通过控制安卓设备来编写自动化游戏脚本
 
 ## 整体框架
 
